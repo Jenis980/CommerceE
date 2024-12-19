@@ -70,3 +70,33 @@ document.addEventListener('DOMContentLoaded', () => {
         showModal('signin-modal');
     });
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const productGrid = document.getElementById('products');
+
+    // Example product list
+    const products = [
+        { id: 1, name: 'Product 1', price: 100, image: 'product1.jpg' },
+        { id: 2, name: 'Product 2', price: 200, image: 'product2.jpg' },
+        { id: 3, name: 'Product 3', price: 300, image: 'product3.jpg' },
+        { id: 4, name: 'Product 4', price: 400, image: 'product4.jpg' },
+    ];
+
+    // Render products
+    products.forEach((product) => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product';
+        productCard.innerHTML = `
+            <img src="${product.image}" alt="${product.name}">
+            <p>${product.name}</p>
+            <p><strong>Rs${product.price}</strong></p>
+            <button class="add-to-cart" data-id="${product.id}">Add to Cart</button>
+        `;
+        productGrid.appendChild(productCard);
+    });
+    document.querySelector('.btn-primary').addEventListener('click', (e) => {
+        e.preventDefault();
+        const productsSection = document.getElementById('products-section');
+        productsSection.scrollIntoView({ behavior: 'smooth' });
+    });
+    
+});
