@@ -17,6 +17,27 @@ function handleAddToCart() {
         alert('Product added to cart!');
     }
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const userLoginBtn = document.getElementById('user-login-btn');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // Check login status
+    if (localStorage.getItem('user')) {
+        // User is logged in
+        userLoginBtn.style.display = 'none';
+        logoutBtn.style.display = 'block';
+    } else {
+        // User is not logged in
+        userLoginBtn.style.display = 'block';
+        logoutBtn.style.display = 'none';
+    }
+});
+
+function logout() {
+    localStorage.removeItem('user'); // Clear user data
+    alert('You have been logged out.');
+    window.location.href = 'login.html'; // Redirect to login page
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // Open modals
@@ -34,8 +55,46 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('signin-close').addEventListener('click', () => closeModal('signin-modal'));
     document.getElementById('signup-close').addEventListener('click', () => closeModal('signup-modal'));
 
-    // Add to cart button
-    document.getElementById('add-to-cart-btn').addEventListener('click', handleAddToCart);
+    // Check if the user is logged in
+function isLoggedIn() {
+    return localStorage.getItem('user') !== null; // Returns true if user data is stored
+}
+
+// Handle Add to Cart button
+function handleAddToCart(productId) {
+    if (!isLoggedIn()) {
+        // Redirect to login page if user is not logged in
+        alert('You need to log in to add items to the cart.');
+        window.location.href = 'login.html';
+        return;
+    }
+    alert(`Product ${productId} added to cart!`);
+}
+
+// Handle Shop Now button
+function handleShopNow() {
+    if (!isLoggedIn()) {
+        alert('Please log in to start shopping.');
+        window.location.href = 'login.html';
+        return;
+    }
+    // Redirect or scroll to products section if logged in
+    document.getElementById('products-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Add event listener to "Shop Now" button
+    document.querySelector('.btn-primary').addEventListener('click', handleShopNow);
+
+    // Add event listeners to all Add to Cart buttons
+    const cartButtons = document.querySelectorAll('.add-to-cart');
+    cartButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const productId = button.getAttribute('data-id'); // Get product ID
+            handleAddToCart(productId);
+        });
+    });
+});
 
     // Sign In form
     document.getElementById('signin-form').addEventListener('submit', (e) => {
@@ -98,5 +157,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const productsSection = document.getElementById('products-section');
         productsSection.scrollIntoView({ behavior: 'smooth' });
     });
+    document.addEventListener('DOMContentLoaded', () => {
+        // Existing DOMContentLoaded code...
     
+        // Add to cart buttons
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', handleAddToCart);
+        });
+    });
 });

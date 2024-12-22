@@ -5,7 +5,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
     const password = document.getElementById('password').value;
 
     try {
-        const response = await fetch('/api/login', { // Replace with your actual API endpoint
+        const response = await fetch('http://localhost:5000/api/login', { // Replace with your actual API endpoint
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -29,4 +29,24 @@ document.getElementById('login-form').addEventListener('submit', async function(
         // Handle network errors
         document.getElementById('message').textContent = `Network error: ${error.message}`;
     }
+    document.getElementById('login-form').addEventListener('submit', async (event) => {
+        event.preventDefault();
+    
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+    
+        // Simulate API call to validate login
+        const response = await fetch('db.json'); // Replace with your actual endpoint
+        const data = await response.json();
+    
+        const user = data.users.find((user) => user.email === email && user.password === password);
+    
+        if (user) {
+            alert('Login Successful!');
+            // Redirect to homepage or dashboard
+            window.location.href = 'index.html';
+        } else {
+            alert('Invalid Email or Password');
+        }
+    });
 });
